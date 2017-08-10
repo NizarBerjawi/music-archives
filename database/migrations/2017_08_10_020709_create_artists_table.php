@@ -16,14 +16,16 @@ class CreateArtistsTable extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-
-            // $table->integer('type_id')->unsigned();
-
             $table->date('begin_date');
             $table->date('end_date');
             $table->boolean('ended')->default(false);
             $table->string('country_code');
             $table->timestamps();
+
+            $table->foreign('country_code')
+                  ->references('code')
+                  ->on('countries')
+                  ->onDelete('cascade');
         });
 
 
@@ -37,7 +39,7 @@ class CreateArtistsTable extends Migration
     public function down()
     {
         Schema::table('artists', function (Blueprint $table) {
-            // $table->dropForeign('artists_type_id_foreign');
+            $table->dropForeign('artists_country_code_foreign');
         });
 
         Schema::dropIfExists('artists');
