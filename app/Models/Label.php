@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Genre extends Model
+class Label extends Model
 {
     /**
      * The table associated with the model.
@@ -23,18 +23,18 @@ class Genre extends Model
     ];
 
     /**
-     * Get the artists associated with this genre
-     */
-    public function artists()
-    {
-        return $this->belongsToMany('App\Models\Artist');
-    }
-
-    /**
-     * Get the recordings associated with this genre
+     * Get the recordings associated with this label
      */
     public function recordings()
     {
         return $this->belongsToMany('App\Models\Recording');
     }
-}
+
+    /**
+     * Get the artists associated with this label
+     */
+    public function artists()
+    {
+        return $this->hasMany('App\Models\Artist');
+    }
+};

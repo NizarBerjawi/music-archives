@@ -14,6 +14,32 @@ class Artist extends Model
     protected $table = 'artists';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'begin_date',
+        'end_date',
+        'ended',
+        'label_id'
+        'country_code',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'begin_date',
+        'end_date',
+    ];
+
+    /**
      * Get the country that this artist belongs to
      */
     public function country()
@@ -38,10 +64,10 @@ class Artist extends Model
     }
 
     /**
-     *
-     *
+     * Get the record label associated with this artist
      */
-
-
-
+    public function label()
+    {
+        return $this->belongsTo('App\Models\Label');
+    }
 }

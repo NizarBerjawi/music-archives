@@ -19,6 +19,7 @@ class CreateArtistsTable extends Migration
             $table->date('begin_date');
             $table->date('end_date');
             $table->boolean('ended')->default(false);
+            $table->integer('label_id')->unsigned();
             $table->string('country_code');
             $table->timestamps();
 
@@ -26,9 +27,12 @@ class CreateArtistsTable extends Migration
                   ->references('code')
                   ->on('countries')
                   ->onDelete('cascade');
+
+            $table->foreign('label_id')
+                  ->references('id')
+                  ->on('labels')
+                  ->onDelete('cascade');
         });
-
-
     }
 
     /**
@@ -40,6 +44,7 @@ class CreateArtistsTable extends Migration
     {
         Schema::table('artists', function (Blueprint $table) {
             $table->dropForeign('artists_country_code_foreign');
+            $table->dropForeign('artists_label_id_foreign');
         });
 
         Schema::dropIfExists('artists');

@@ -12,4 +12,23 @@ class Track extends Model
      * @var string
      */
     protected $table = 'tracks';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'recording_id',
+        'playtime',
+    ];
+
+    /**
+     * Get the recording that this track belongs to
+     */
+    public function recording()
+    {
+        return $this->belongsTo('App\Models\Recording');
+    }
 }

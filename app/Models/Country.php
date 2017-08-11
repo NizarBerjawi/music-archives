@@ -26,4 +26,24 @@ class Country extends Model
      * @var string
      */
     public $incrementing = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code',
+        'name',
+    ];
+
+    /**
+     * Get the artists associated with this country
+     */
+    public function artists()
+    {
+        return $this->hasMany('App\Models\Artist');
+    }
+
+
 }
