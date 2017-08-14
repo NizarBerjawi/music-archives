@@ -11,7 +11,7 @@ class Label extends Model
      *
      * @var string
      */
-    protected $table = 'genres';
+    protected $table = 'labels';
 
     /**
      * The attributes that are mass assignable.

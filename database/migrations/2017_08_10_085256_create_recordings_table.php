@@ -16,16 +16,10 @@ class CreateRecordingsTable extends Migration
         Schema::create('recordings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('playlength');
+            $table->string('length');
             $table->date('release_date');
-            $table->integer('label_id')->unsigned();
-            $table->string('image_path')->unique();
+            $table->string('image_path')->nullable();
             $table->timestamps();
-
-            $table->foreign('label_id')
-                  ->references('id')
-                  ->on('labels')
-                  ->onDelete('cascade');
         });
     }
 
@@ -36,10 +30,6 @@ class CreateRecordingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('recordings', function (Blueprint $table) {
-            $table->dropForeign('recordings_label_id_foreign');
-        });
-
         Schema::dropIfExists('recordings');
     }
 }

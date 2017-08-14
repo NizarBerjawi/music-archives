@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Filters\Filterable;
 
 class Artist extends Model
 {
+    use Filterable;
+
     /**
      * The table associated with the model.
      *
@@ -22,8 +25,7 @@ class Artist extends Model
         'name',
         'begin_date',
         'end_date',
-        'ended',
-        'label_id'
+        'label_id',
         'country_code',
     ];
 
@@ -69,5 +71,16 @@ class Artist extends Model
     public function label()
     {
         return $this->belongsTo('App\Models\Label');
+    }
+
+    /**
+     * Load all required relationships with only necessary content.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLoadRelations($query, $relations)
+    {
+        return $query->with($relations);
     }
 }

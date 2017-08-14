@@ -26,9 +26,9 @@ class Recording extends Model
     ];
 
     /**
-     * Get the artists that released this recording
+     * Get the artists that appear on this recording
      */
-    public function artist()
+    public function artists()
     {
         return $this->belongsToMany('App\Models\Artist');
     }
@@ -39,7 +39,21 @@ class Recording extends Model
     public function genres()
     {
         return $this->belongsToMany('App\Models\Genre');
+    }
 
+    /**
+     * Get the labels associated with this recording
+     */
+    public function labels()
+    {
+        return $this->belongsToMany('App\Models\Label');
+    }
 
-
+    /**
+     * Get the tracks belonging to this recording
+     */
+    public function tracks()
+    {
+        return $this->hasMany('App\Models\Track');
+    }
 }

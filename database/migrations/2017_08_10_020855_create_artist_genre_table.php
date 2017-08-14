@@ -16,6 +16,7 @@ class CreateArtistGenreTable extends Migration
         Schema::create('artist_genre', function (Blueprint $table) {
             $table->integer('artist_id')->unsigned();
             $table->integer('genre_id')->unsigned();
+            $table->string('image_path')->unique()->nullable();
             $table->timestamps();
 
             $table->primary(['artist_id', 'genre_id']);

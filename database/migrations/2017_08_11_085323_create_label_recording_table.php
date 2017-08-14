@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRecordingLabelTable extends Migration
+class CreateLabelRecordingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRecordingLabelTable extends Migration
      */
     public function up()
     {
-        Schema::create('recording_label', function (Blueprint $table) {
+        Schema::create('label_recording', function (Blueprint $table) {
             $table->integer('recording_id')->unsigned();
             $table->integer('label_id')->unsigned();
             $table->timestamps();
@@ -39,6 +39,6 @@ class CreateRecordingLabelTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recording_label');
+        Schema::dropIfExists('label_recording');
     }
 }

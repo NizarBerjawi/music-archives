@@ -16,9 +16,8 @@ class CreateArtistsTable extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->date('begin_date');
-            $table->date('end_date');
-            $table->boolean('ended')->default(false);
+            $table->date('begin_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->integer('label_id')->unsigned();
             $table->string('country_code');
             $table->timestamps();

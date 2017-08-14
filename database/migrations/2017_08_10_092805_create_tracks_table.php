@@ -17,7 +17,7 @@ class CreateTracksTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->integer('recording_id')->unsigned();
-            $table->string('playtime');
+            $table->string('length');
             $table->timestamps();
 
             $table->foreign('recording_id')
@@ -37,7 +37,7 @@ class CreateTracksTable extends Migration
         Schema::table('tracks', function (Blueprint $table) {
             $table->dropForeign('tracks_recording_id_foreign');
         });
-        
+
         Schema::dropIfExists('tracks');
     }
 }
