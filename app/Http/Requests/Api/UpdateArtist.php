@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateArtist extends ApiRequest
+class UpdateArtist extends ApiRequest
 {
     /**
      * Get the data to be validated from the request
@@ -13,7 +13,7 @@ class CreateArtist extends ApiRequest
      */
     protected function validationData()
     {
-        return $this->get('artist') ?: [];
+        return $this->get('article') ?: [];
     }
 
     /**
@@ -26,7 +26,7 @@ class CreateArtist extends ApiRequest
         return [
             'name' => 'required|string|max:255',
             'begin_date' =>  'sometimes|date',
-            'end_date' => 'sometimes|date|after:'.$this->input('artist.begin_date'),
+            'end_date' => 'sometimes|date|after:'.$this->begin_date,
             'label_id' => 'required|integer',
             'country_code' => 'required|string',
         ];

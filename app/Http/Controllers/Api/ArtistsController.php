@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Artist;
 use App\Paginate\Paginate;
 use App\Filters\ArtistFilter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\Api\CreateArtist;
 use App\Http\Requests\Api\UpdateArtist;
@@ -56,46 +57,48 @@ class ArtistsController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Api\CreateArtist  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateArtist $request)
     {
-        //
+        return $request->all();
+        $artist = Artist::create([
+            'name' => $request->input('artist.name'),
+            'begin_date' => $request->input('artist.begin_date'),
+            'end_date' => $request->input('artist.end_date'),
+            'label_id' => $request->input('artist.label_id'),
+            'country_code' => $request->input('artist.country_code'),
+        ]);
+
+        return $this->respondWithTransformer($artist);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Artist $artist)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->respondWithTransformer($artist);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Api\UpdateArtist  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Artist $artist)
     {
-        //
+        if ($request->has('artist')) {
+            $artist->update($request->input('artist'));
+        }
+
+        return $this->respondWithTransformer($artist);
     }
 
     /**
