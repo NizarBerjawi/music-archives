@@ -36,18 +36,19 @@ class ArtistsController extends ApiController
         // Filter the artists
         $builder = Artist::filter($filter);
 
-        // Load any relatioships
-        if (Input::has('include')) {
-            // Get the relations to eager load
-            $relations = explode(',', Input::get('include'));
-            // Load relations
-            $builder = $builder->loadRelations($this->transformer->embeds($relations));
-        }
+        // Get the embeds query parameter and split by commas
+        $includes = explode(',', Input::get('include', ''));
 
+        // Relationships to be embedded
+        $embeds = $this->transformer->getEmbeds($includes);
+
+        // Load relations, if any
+        $builder = $builder->loadRelations($embeds);
+
+        // Instantiate a new Paginate object
         $artists = new Paginate($builder);
 
-        // return response()->json($artists->getData()->first());
-
+        // Return the paginated response
         return $this->respondWithPagination($artists);
     }
 

@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use Illuminate\Support\Collection;
 use App\Paginate\Paginate;
+use ReflectionClass;
 
 abstract class Transformer
 {
@@ -15,11 +16,11 @@ abstract class Transformer
     protected $resourceName = 'data';
 
     /**
-     * The possible relationships that could be eager loaded.
+     * The relations to be embeded in the response.
      *
      * @var array
      */
-    protected $relationships;
+    protected $embeds = [];
 
     /**
      * Transform a collection of items.
@@ -60,15 +61,15 @@ abstract class Transformer
         $resourceName = str_plural($this->resourceName);
 
         // The count name
-        $countName = str_plural($this->resourceName) . 'Count';
+        $countName = $resourceName . 'Count';
 
         // Pass the paginated data through the transformer
-        $data = [
+        $data = collect([
             $resourceName => $paginated->getData()->map([$this, 'transform'])
-        ];
+        ]);
 
         // Return the transformed data with the count name
-        return array_merge($data, [
+        return $data->merge([
             $countName => $paginated->getTotal()
         ]);
     }
@@ -80,11 +81,59 @@ abstract class Transformer
      * @param
      * @return array
      */
-    public function embeds($relations)
+    public function getEmbeds($includes)
     {
-        return array_keys(
-            array_intersect($this->relationships, $relations)
-        );
+        $embeds = array_map(function($value) {
+             return strtolower(str_replace('embed', '', $value));
+        }, $this->getEmbedMethods());
+
+        $intersection = array_keys(array_intersect($this->relationships, $includes));
+
+
+        return $this->embeds = array_intersect($embeds, $intersection);
+    }
+
+    /**
+     * Get all available embed methods
+     *
+     * @return array
+     */
+    private function getEmbedMethods()
+    {
+        // The reflection class reports information about a class
+        $class = new ReflectionClass(static::class);
+
+        // An array of the methods in the specified Filter class
+        $methods = array_map(function($method) use ($class) {
+            if ($method->class === $class->getName()
+                        && strpos($method, 'embed') !== false) {
+                return $method->name;
+            }
+            return null;
+        }, $class->getMethods());
+
+        // Remove all null values from the array
+        return array_filter($methods);
+    }
+
+    /**
+     * Apply all the requested embeds if available.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function applyEmbeds($data)
+    {
+        // Loop over the embeds
+        foreach ($this->embeds as $name) {
+            // Manipulate the method names
+            $method = 'embed' . ucfirst($name);
+
+            // Check if the embed exists in the Transformer class
+            if (method_exists($this, $method)) {
+                $this->$method($data);
+            }
+        }
     }
 
     /**

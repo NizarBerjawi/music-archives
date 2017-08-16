@@ -2,14 +2,14 @@
 
 namespace App\Transformers;
 
-class RecordingTransformer extends Transformer
+class LabelTransformer extends Transformer
 {
     /**
      * Resource name of the json object.
      *
      * @var string
      */
-    protected $resourceName = 'recording';
+    protected $resourceName = 'label';
 
     /**
      * The possible relationships that could be eager loaded.
@@ -17,9 +17,8 @@ class RecordingTransformer extends Transformer
      * @var array
      */
     protected $relationships = [
-        'artists'    => 'artists',
-        'genres'     => 'genres',
-        'label'      => 'label',
+        'recordings' => 'albums',
+        'artists' => 'artists',
     ];
 
     /**
@@ -31,10 +30,7 @@ class RecordingTransformer extends Transformer
     public function transform($data)
     {
         return [
-            'id'                => $data->id,
-            'title'             => $data->title,
-            'length'            => $data->length,
-            'release_date'      => $data->release_date,
+            'name' => $data->name,
         ];
     }
 }

@@ -15,5 +15,5 @@ class ArtistFilter extends Filter
     protected function country($code)
     {
         return $this->builder->whereCountryCode($code);
-    }    
+    }
 }

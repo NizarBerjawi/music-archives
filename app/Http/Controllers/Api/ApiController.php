@@ -10,9 +10,10 @@ use App\Transformers\Transformer;
 
 class ApiController extends Controller
 {
-    /** \App\RealWorld\Transformers\Transformer
+    /**
+     * The resource transformer
      *
-     * @var null
+     * @var App\Transformers\Transformer
      */
     protected $transformer = null;
 
@@ -57,6 +58,7 @@ class ApiController extends Controller
      * Respond with pagination.
      *
      * @param $paginated
+     * @param $embeds
      * @param int $statusCode
      * @param array $headers
      * @return \Illuminate\Http\JsonResponse
@@ -69,7 +71,7 @@ class ApiController extends Controller
         // Make sure the transformer is valid
         $this->checkTransformer();
 
-        // Transform the paginated data
+        // Transform the paginated data and add the embeds
         $data = $this->transformer->paginate($paginated);
 
         return $this->respond($data, $statusCode, $headers);

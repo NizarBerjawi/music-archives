@@ -2,6 +2,9 @@
 
 namespace App\Transformers;
 
+use App\Models\Artist;
+use Illuminate\Support\Facades\Input;
+
 class ArtistTransformer extends Transformer
 {
     /**
@@ -10,6 +13,8 @@ class ArtistTransformer extends Transformer
      * @var string
      */
     protected $resourceName = 'artist';
+
+    protected $transformed;
 
     /**
      * The possible relationships that could be eager loaded.
@@ -31,23 +36,75 @@ class ArtistTransformer extends Transformer
      */
     public function transform($data)
     {
-        return [
-            'id'                => $data['id'],
-            'name'              => $data['name'],
-            'begin_date'        => $data['begin_date']->toAtomString(),
-            'end_date'          => $data['end_date']->toAtomString(),
-            'recordings'        => $data['recordings']->map(function($recording) {
-                                        return [
-                                            'id'            => $recording->id,
-                                            'title'         => $recording->title,
-                                            'length'        => $recording->length,
-                                            'release_date'  => $recording->release_date,
-                                        ];
-                                  }),
-            'country'          => [
-                'name'            => $data['country']->name,
-                'country_code'    => $data['country']->code,
-                ]
+        $this->transformed = [
+            'id'                => $data->id,
+            'name'              => $data->name,
+            'begin_date'        => $data->begin_date->format('Y-m-d'),
+            'end_date'          => $data->end_date->format('Y-m-d'),
+        ];
+
+        $this->applyEmbeds($data);
+
+        return $this->transformed;
+    }
+
+    /**
+     * Embed the recordings relationship.
+     *
+     * @param App\Transformers\RecordingTransformer
+     * @param $data
+     * @return mixed
+     */
+    public function embedRecordings($data)
+    {
+        $this->transformed = $this->transformed + [
+            'recordings' => $data->recordings->map(function($recording) {
+                return (new RecordingTransformer)->transform($recording);
+            })
+        ];
+    }
+
+    /**
+     * Embed the country relationship.
+     *
+     * @param App\Transformers\CountryTransformer
+     * @param $data
+     * @return mixed
+     */
+    public function embedCountry($data)
+    {
+        $this->transformed = $this->transformed + [
+            'country' => (new CountryTransformer)->transform($data->country)
+        ];
+    }
+
+    /**
+     * Embed the genres relationship.
+     *
+     * @param App\Transformers\GenreTransformer
+     * @param $data
+     * @return mixed
+     */
+    public function embedGenres($data)
+    {
+        $this->transformed = $this->transformed + [
+            'genres' => $data->genres->map(function($genre) {
+                return (new GenreTransformer)->transform($genre);
+            })
+        ];
+    }
+
+    /**
+     * Embed the label relationship.
+     *
+     * @param App\Transformers\LabelTransformer
+     * @param $data
+     * @return mixed
+     */
+    public function embedLabel($data)
+    {
+        $this->transformed = $this->transformed + [
+            'label' => (new LabelTransformer)->transform($data->label)
         ];
     }
 }
