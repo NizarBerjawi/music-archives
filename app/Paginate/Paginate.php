@@ -27,7 +27,7 @@ class Paginate
      * @param int $limit
      * @param int $offset
      */
-    public function __construct(Builder $builder, $limit = 10, $offset = 0)
+    public function __construct(Builder $builder, $limit = 20, $offset = 0)
     {
         // Get the pagination limit
         $limit = request()->get('limit', $limit);
@@ -36,8 +36,7 @@ class Paginate
         // The total items
         $this->total = $builder->count();
 
-        $this->data = $builder->latest()
-                              ->skip($offset)
+        $this->data = $builder->skip($offset)
                               ->take($limit)
                               ->get();
     }

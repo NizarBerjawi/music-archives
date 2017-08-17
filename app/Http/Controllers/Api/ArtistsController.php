@@ -47,7 +47,7 @@ class ArtistsController extends ApiController
         $builder = $builder->loadRelations($embeds);
 
         // Instantiate a new Paginate object
-        $artists = new Paginate($builder);
+        $artists = new Paginate($builder, Input::get('limit', null), Input::get('offset', null));
 
         // Return the paginated response
         return $this->respondWithPagination($artists);
