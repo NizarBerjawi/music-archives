@@ -23,6 +23,13 @@ abstract class Transformer
     protected $embeds = [];
 
     /**
+     * The transformed response
+     *
+     * @var array
+     */
+    protected $transformed;
+
+    /**
      * Transform a collection of items.
      *
      * @param Collection $data

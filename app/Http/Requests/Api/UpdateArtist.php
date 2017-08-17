@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateArtist extends ApiRequest
 {
     /**
@@ -26,7 +24,7 @@ class UpdateArtist extends ApiRequest
         return [
             'name' => 'required|string|max:255',
             'begin_date' =>  'sometimes|date',
-            'end_date' => 'sometimes|date|after:'.$this->begin_date,
+            'end_date' => 'sometimes|date|after:'.$this->input('artist.begin_date'),
             'label_id' => 'required|integer',
             'country_code' => 'required|string',
         ];

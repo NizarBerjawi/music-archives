@@ -1,7 +1,6 @@
 <?php
-namespace App\Filters;
 
-use App\Models\Artist;
+namespace App\Filters;
 
 class ArtistFilter extends Filter
 {

@@ -14,8 +14,6 @@ class ArtistTransformer extends Transformer
      */
     protected $resourceName = 'artist';
 
-    protected $transformed;
-
     /**
      * The possible relationships that could be eager loaded.
      *
@@ -43,8 +41,10 @@ class ArtistTransformer extends Transformer
             'end_date'          => $data->end_date->format('Y-m-d'),
         ];
 
+        // Apply any required embeds
         $this->applyEmbeds($data);
 
+        // Return the transformed response
         return $this->transformed;
     }
 

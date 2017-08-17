@@ -28,4 +28,20 @@ Route::group(['namespace' => 'Api'], function(){
         Route::put('/{artist}', 'ArtistsController@update')->name('update');
         Route::delete('/{artist}', 'ArtistsController@destroy')->name('destroy');
     });
+
+    Route::group(['prefix' => 'labels', 'as' => 'labels.'], function() {
+        Route::get('/', 'LabelsController@index')->name('index');
+        Route::post('/', 'LabelsController@store')->name('store');
+        Route::get('/{label}', 'LabelsController@show')->name('show');
+        Route::put('/{label}', 'LabelsController@update')->name('update');
+        Route::delete('/{label}', 'LabelsController@destroy')->name('destroy');
+    });
+
+    Route::group(['prefix' => 'recordings', 'as' => 'recordings.'], function() {
+        Route::get('/', 'RecordingsController@index')->name('index');
+        Route::post('/', 'RecordingsController@store')->name('store');
+        Route::get('/{recording}', 'RecordingsController@show')->name('show');
+        Route::put('/{recording}', 'RecordingsController@update')->name('update');
+        Route::delete('/{recording}', 'RecordingsController@destroy')->name('destroy');
+    });
 });

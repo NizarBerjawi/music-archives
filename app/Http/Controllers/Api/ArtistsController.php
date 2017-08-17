@@ -62,7 +62,6 @@ class ArtistsController extends ApiController
      */
     public function store(CreateArtist $request)
     {
-        return $request->all();
         $artist = Artist::create([
             'name' => $request->input('artist.name'),
             'begin_date' => $request->input('artist.begin_date'),

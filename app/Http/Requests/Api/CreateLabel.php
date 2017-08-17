@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
-class UpdateUser extends ApiRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateLabel extends ApiRequest
 {
     /**
      * Get the data to be validated from the request
@@ -11,7 +13,7 @@ class UpdateUser extends ApiRequest
      */
     protected function validationData()
     {
-        return $this->get('user') ?: [];
+        return $this->get('artist') ?: [];
     }
 
     /**
@@ -22,8 +24,7 @@ class UpdateUser extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'sometimes|email|max:255|unique:users,email,' . $this->user()->id,
-            'password' => 'sometimes|min:6',
+            'name' => 'required|string|max:255',
         ];
     }
 }

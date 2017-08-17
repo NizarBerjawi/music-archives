@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Filters\Filterable;
 
 class Label extends Model
 {
+    use Filterable;
+
     /**
      * The table associated with the model.
      *
@@ -36,5 +39,16 @@ class Label extends Model
     public function artists()
     {
         return $this->hasMany('App\Models\Artist');
+    }
+
+    /**
+     * Load all required relationships with only necessary content.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLoadRelations($query, $relations)
+    {
+        return $query->with($relations);
     }
 };

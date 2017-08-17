@@ -29,8 +29,45 @@ class LabelTransformer extends Transformer
      */
     public function transform($data)
     {
-        return [
+        $this->transformed = [
+            'id'   => $data->id,
             'name' => $data->name,
+        ];
+
+        // Apply any required embeds
+        $this->applyEmbeds($data);
+
+        // Return the transformed response
+        return $this->transformed;
+    }
+
+    /**
+     * Embed the recordings relationship.
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function embedRecordings($data)
+    {
+        $this->transformed = $this->transformed + [
+            'recordings' => $data->recordings->map(function($recording) {
+                return (new RecordingTransformer)->transform($recording);
+            })
+        ];
+    }
+
+    /**
+     * Embed the artists relationship.
+     *
+     * @param $data
+     * @return mixed
+     */
+    public function embedArtists($data)
+    {
+        $this->transformed = $this->transformed + [
+            'artists' => $data->artists->map(function($artist) {
+                return (new ArtistTransformer)->transform($artist);
+            })
         ];
     }
 }
