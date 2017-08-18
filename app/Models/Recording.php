@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Filters\Filterable;
 
 class Recording extends Model
 {
+    use Filterable;
+
     /**
      * The table associated with the model.
      *
@@ -55,5 +58,16 @@ class Recording extends Model
     public function tracks()
     {
         return $this->hasMany('App\Models\Track');
+    }
+
+    /**
+     * Load all required relationships with only necessary content.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLoadRelations($query, $relations)
+    {
+        return $query->with($relations);
     }
 }

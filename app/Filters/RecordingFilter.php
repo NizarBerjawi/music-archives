@@ -1,7 +1,7 @@
 <?php
 namespace App\Filters;
 
-class LabelFilter extends Filter
+class RecordingFilter extends Filter
 {
     /**
      * Filter by recordings by artist name.
@@ -9,8 +9,10 @@ class LabelFilter extends Filter
      * @param string $name
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function name($name)
+    protected function artistName($name)
     {
-        return $this->builder->whereHas($name);
+        return $this->builder->whereHas('artists', function($query) use ($name) {
+                $query->where('name', 'like', '%$name%');
+        });
     }
 }

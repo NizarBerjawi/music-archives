@@ -108,8 +108,8 @@ class DummyDataSeeder extends Seeder
 
         // Create artists and recordings genres
         $genres = factory(Genre::class)
-        ->times($this->totalGenres)
-        ->create();
+                    ->times($this->totalGenres)
+                    ->create();
 
         // Create all record labels
         $labels = factory(Label::class)
