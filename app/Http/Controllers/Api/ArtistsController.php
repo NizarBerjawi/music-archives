@@ -24,7 +24,7 @@ class ArtistsController extends ApiController
         // Get an instance of the UserTransformer
         $this->transformer = $transformer;
 
-        $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('auth:api');
     }
 
     /**
@@ -47,7 +47,7 @@ class ArtistsController extends ApiController
         $builder = $builder->loadRelations($embeds);
 
         // Instantiate a new Paginate object
-        $artists = new Paginate($builder, Input::get('limit', null), Input::get('offset', null));
+        $artists = new Paginate($builder);
 
         // Return the paginated response
         return $this->respondWithPagination($artists);
@@ -62,19 +62,13 @@ class ArtistsController extends ApiController
      */
     public function store(CreateArtist $request)
     {
-        $artist = Artist::create([
-            'name' => $request->input('artist.name'),
-            'begin_date' => $request->input('artist.begin_date'),
-            'end_date' => $request->input('artist.end_date'),
-            'label_id' => $request->input('artist.label_id'),
-            'country_code' => $request->input('artist.country_code'),
-        ]);
+        $artist = Artist::create($request->input('artist'));
 
         return $this->respondWithTransformer($artist);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Artist by its slug.
      *
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
@@ -85,7 +79,7 @@ class ArtistsController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified artist by its slug and return the artist if successful
      *
      * @param  \App\Http\Requests\Api\UpdateArtist  $request
      * @param  int  $id

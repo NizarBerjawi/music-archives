@@ -20,6 +20,7 @@ class CreateArtistsTable extends Migration
             $table->date('end_date')->nullable();
             $table->integer('label_id')->unsigned();
             $table->string('country_code');
+            $table->string('slug');
             $table->timestamps();
 
             $table->foreign('country_code')

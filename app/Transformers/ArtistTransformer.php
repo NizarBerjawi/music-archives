@@ -38,7 +38,7 @@ class ArtistTransformer extends Transformer
             'id'                => $data->id,
             'name'              => $data->name,
             'begin_date'        => $data->begin_date->format('Y-m-d'),
-            'end_date'          => $data->end_date->format('Y-m-d'),
+            'end_date'          => $data->end_date ? $data->end_date->format('Y-m-d') : null,
         ];
 
         // Apply any required embeds

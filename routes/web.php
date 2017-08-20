@@ -15,21 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('password-grant-auth', function() {
-    $http = new GuzzleHttp\Client;
-
-    $response = $http->post('http://music-archives.app/oauth/token', [
-        'form_params' => [
-            'grant_type' => 'password',
-            'client_id' => config('api.id'),
-            'client_secret' => config('api.secret'),
-            'username' => 'fritz.stoltenberg@example.com',
-            'password' => 'secret',
-            'scope' => '',
-        ]
-    ]);
-
-    $thisUsersTokens = json_decode((string) $response->getBody(), true);
-
-    return $thisUsersTokens;
+Route::group(['prefix' => 'artists', 'as' => 'artists.'], function() {
+    Route::get('/', 'ArtistsController@index')->name('index');
+    Route::get('/create', 'ArtistsController@create')->name('create');
+    Route::post('/', 'ArtistsController@store')->name('store');
+    Route::get('/{artist}', 'ArtistsController@show')->name('show');
+    Route::get('/{artist}/edit', 'ArtistsController@edit')->name('edit');
+    Route::put('/{artist}', 'ArtistsController@update')->name('update');
 });

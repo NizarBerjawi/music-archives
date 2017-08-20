@@ -15,33 +15,33 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api'], function(){
 
-    Route::post('users/login', 'AuthController@login')->name('login');
-    Route::post('users', 'AuthController@register')->name('register');
+    Route::post('users/login', 'AuthController@login');
+    Route::post('users', 'AuthController@register');
 
-    Route::get('user', 'UsersController@index')->name('user.index');
-    Route::match(['put', 'patch'], 'user', 'UserController@update');
+    Route::get('users', 'UsersController@index');
+    Route::match(['put', 'patch'], 'user', 'UsersController@update');
 
-    Route::group(['prefix' => 'artists', 'as' => 'artists.'], function() {
-        Route::get('/', 'ArtistsController@index')->name('index');
-        Route::post('/', 'ArtistsController@store')->name('store');
-        Route::get('/{artist}', 'ArtistsController@show')->name('show');
-        Route::put('/{artist}', 'ArtistsController@update')->name('update');
-        Route::delete('/{artist}', 'ArtistsController@destroy')->name('destroy');
+    Route::group(['prefix' => 'artists'], function() {
+        Route::get('/', 'ArtistsController@index');
+        Route::post('/', 'ArtistsController@store');
+        Route::get('/{artist}', 'ArtistsController@show');
+        Route::put('/{artist}', 'ArtistsController@update');
+        Route::delete('/{artist}', 'ArtistsController@destroy');
     });
 
-    Route::group(['prefix' => 'labels', 'as' => 'labels.'], function() {
-        Route::get('/', 'LabelsController@index')->name('index');
-        Route::post('/', 'LabelsController@store')->name('store');
-        Route::get('/{label}', 'LabelsController@show')->name('show');
-        Route::put('/{label}', 'LabelsController@update')->name('update');
-        Route::delete('/{label}', 'LabelsController@destroy')->name('destroy');
+    Route::group(['prefix' => 'labels'], function() {
+        Route::get('/', 'LabelsController@index');
+        Route::post('/', 'LabelsController@store');
+        Route::get('/{label}', 'LabelsController@show');
+        Route::put('/{label}', 'LabelsController@update');
+        Route::delete('/{label}', 'LabelsController@destroy');
     });
 
-    Route::group(['prefix' => 'recordings', 'as' => 'recordings.'], function() {
-        Route::get('/', 'RecordingsController@index')->name('index');
-        Route::post('/', 'RecordingsController@store')->name('store');
-        Route::get('/{recording}', 'RecordingsController@show')->name('show');
-        Route::put('/{recording}', 'RecordingsController@update')->name('update');
-        Route::delete('/{recording}', 'RecordingsController@destroy')->name('destroy');
+    Route::group(['prefix' => 'recordings'], function() {
+        Route::get('/', 'RecordingsController@index');
+        Route::post('/', 'RecordingsController@store');
+        Route::get('/{recording}', 'RecordingsController@show');
+        Route::put('/{recording}', 'RecordingsController@update');
+        Route::delete('/{recording}', 'RecordingsController@destroy');
     });
 });

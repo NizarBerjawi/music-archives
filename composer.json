@@ -9,7 +9,8 @@
         "laravel/framework": "5.4.*",
         "laravel/passport": "^3.0",
         "laravel/tinker": "~1.0",
-        "prettus/l5-repository": "^2.6"
+        "prettus/l5-repository": "^2.6",
+        "twbs/bootstrap": "4.0.0-beta"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

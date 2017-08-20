@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Filters\Filterable;
+use App\Slug\HasSlug;
+use Illuminate\Database\Eloquent\Model;
 
 class Artist extends Model
 {
-    use Filterable;
+    use Filterable, HasSlug;
 
     /**
      * The table associated with the model.
@@ -82,5 +83,35 @@ class Artist extends Model
     public function scopeLoadRelations($query, $relations)
     {
         return $query->with($relations);
+    }
+
+    /**
+     * Get the key name for route model binding
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Get the attribute name to slugify
+     *
+     * @return string
+     */
+    public function getSlugSourceColumn()
+    {
+        return 'title';
+    }
+
+    /**
+     * Get list of values which are not allowed for this resource
+     *
+     * @return array
+     */
+    public function getBannedSlugValues()
+    {
+        return ['feed'];
     }
 }

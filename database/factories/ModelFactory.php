@@ -42,8 +42,11 @@ $factory->define(App\Models\Label::class, function(Faker\Generator $faker) {
 });
 
 $factory->define(App\Models\Artist::class, function(Faker\Generator $faker) {
+
+    $artistName = $faker->name;
+
     return [
-        'name' => $faker->name,
+        'name' => $artistName,
         'begin_date' => $faker->dateTimeBetween(
             $startDate = '-50 years',
             $endDate = '-20 years',
@@ -57,6 +60,7 @@ $factory->define(App\Models\Artist::class, function(Faker\Generator $faker) {
         'label_id' => function() {
             return factory(App\Models\Label::class)->create()->id;
         },
+        'slug' => (new \App\Slug\Slug($artistName))->generate()
     ];
 });
 
